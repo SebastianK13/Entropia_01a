@@ -9,9 +9,11 @@ namespace Entropia_01a
     public class IO
     {
         private Language language;
-        private Message message = new Message();
+        public Message message = new Message();
         public IO()
         {
+            Console.OutputEncoding = Encoding.UTF8;
+            Console.InputEncoding = Encoding.Unicode;
             language = new Language();
             language.CreateLanguageList();
         }
@@ -20,6 +22,7 @@ namespace Entropia_01a
             GetMessage();
             GetChoosenLanguage();
         }
+        //Pobranie wiadomości od użytkownika
         private void GetMessage() 
         {
             Console.WriteLine("Wprowadź tekst(tylko litery): ");
@@ -28,36 +31,41 @@ namespace Entropia_01a
             do
             {
                 input = Console.ReadLine();
-                result = ContainsLettersOnly(input);
+
+                if(input != "")
+                    result = ContainsLettersOnly(input);
+
                 if (!result)
-                    Console.WriteLine("Błąd, wprowadzony wartość nie spełnia powyższych wymagań: ");
+                    Console.WriteLine("Błąd, wprowadzona wartość nie spełnia powyższych wymagań: ");
 
             } while (!result);
 
             message.MessageContent = input;
             message.MessageLength = input.Length;
         }
+        //Wybór języka
         private void GetChoosenLanguage()
         {
             Console.Write("1.Alfabet polski\n2.Alfabet angielski" +
-                "\n3.Alfabet niemiecki\n4.Alfabet francuski\n5.Alfabet Czeski\n");
+                "\n3.Alfabet niemiecki\n4.Alfabet francuski\n5.Alfabet czeski\n");
             Console.WriteLine("Wprowadź cyfrę z zakresu [1,5] aby wybrać odpowiedni alfabet:");
             string digit;
             bool result = false;
             do
             {
                 digit = Console.ReadLine();
-                if(digit.Length < 2)
+                if(digit.Length < 2 && digit != "")
                 {
                     result = IsDigitFromRange(digit);
                 }
                 
                 if(!result)
-                    Console.WriteLine("Błąd, wprowadzony wartość nie spełnia powyższych wymagań: ");
+                    Console.WriteLine("Błąd, wprowadzona wartość nie spełnia powyższych wymagań: ");
 
             } while (!result);
 
         }
+        //Sprawdzenie czy wiadomość zawiera tylko litery
         private bool ContainsLettersOnly(string message)
         {
             foreach(char c in message)
@@ -67,6 +75,7 @@ namespace Entropia_01a
             }
             return true;
         }
+        //Sprawdzenie czy wprowadzona wartość jest cyfrą i czy mieści się w podanym zakresie
         private bool IsDigitFromRange(string insertedNum)
         {
             foreach (char c in insertedNum)
@@ -96,11 +105,16 @@ namespace Entropia_01a
         public void CreateLanguageList() =>
             languages = new List<Language>
             {
-                new Language {Name = "Polish", EntropyValue = 5},
-                new Language {Name = "English", EntropyValue = 4.7},
-                new Language {Name = "German", EntropyValue = 4.75},
-                new Language {Name = "French", EntropyValue = 4.95},
-                new Language {Name = "Czech", EntropyValue = 5.21}
+                new Language {Name = "Polish", EntropyValue = Math.Round((Math.Log(32) / Math.Log(2)), 2,
+                                             MidpointRounding.ToEven)},
+                new Language {Name = "English", EntropyValue = Math.Round((Math.Log(26) / Math.Log(2)), 2,
+                                             MidpointRounding.ToEven)},
+                new Language {Name = "German", EntropyValue = Math.Round((Math.Log(30) / Math.Log(2)), 2,
+                                             MidpointRounding.ToEven)},
+                new Language {Name = "French", EntropyValue = Math.Round((Math.Log(31) / Math.Log(2)), 2,
+                                             MidpointRounding.ToEven)},
+                new Language {Name = "Czech", EntropyValue = Math.Round((Math.Log(37) / Math.Log(2)), 2,
+                                             MidpointRounding.ToEven)}
             };
         public Language GetAlphabetEntropy(int digit) => 
             languages[digit - 1];
@@ -111,5 +125,7 @@ namespace Entropia_01a
         public int MessageLength { get; set; }
         public Language Language { get; set; }
         public string MessageContent { get; set; }
+        //Prawdopodobieństwo wystąpienia błędu
+        public double ErrorProb = 0.01;
     }
 }
