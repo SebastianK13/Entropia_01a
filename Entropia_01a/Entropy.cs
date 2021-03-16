@@ -57,14 +57,14 @@ namespace Entropia_01a
         private void SetConditionalEntropy()
         {
             double value = -1 + _message.ErrorProb;
-            var t = ((-_message.ErrorProb * Math.Log(_message.ErrorProb)) / Math.Log(2));
-            var t2 = ((value * Math.Log(-value)) / Math.Log(2));
+            var p = ((-_message.ErrorProb * Math.Log(_message.ErrorProb)) / Math.Log(2));
+            var q = ((value * Math.Log(-value)) / Math.Log(2));
 
-            ConditionalEntropy = Math.Round(t + t2, 3, MidpointRounding.ToEven);
+            ConditionalEntropy = Math.Round(p + q, 3, MidpointRounding.ToEven);
         }
         //Obliczanie entropii efektywnej
         private void SetEffectiveEntropy() =>
-            EffectiveEntropy = 1 - ConditionalEntropy;
+            EffectiveEntropy = BinaryAEntropy - ConditionalEntropy;
 
         //Obliczanie ilości informacji
         private void SetQsOfInformation()

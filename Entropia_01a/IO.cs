@@ -12,7 +12,7 @@ namespace Entropia_01a
         public Message message = new Message();
         public IO()
         {
-            Console.OutputEncoding = Encoding.UTF8;
+            Console.OutputEncoding = Encoding.Unicode;
             Console.InputEncoding = Encoding.Unicode;
             language = new Language();
             language.CreateLanguageList();
@@ -26,7 +26,7 @@ namespace Entropia_01a
         private void GetMessage() 
         {
             Console.WriteLine("Wprowadź tekst(tylko litery): ");
-            string input;
+            string input="";
             bool result = false;
             do
             {
@@ -64,6 +64,7 @@ namespace Entropia_01a
 
             } while (!result);
 
+            Console.WriteLine("Entropia alfabetu {0} wynosi {1}", message.Language.Name, message.Language.EntropyValue);
         }
         //Sprawdzenie czy wiadomość zawiera tylko litery
         private bool ContainsLettersOnly(string message)
